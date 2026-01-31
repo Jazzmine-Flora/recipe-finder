@@ -219,6 +219,24 @@ function openRecipeModal(mealId: string) {
       modalBody.innerHTML = `
         <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="recipe-modal-image">
         <h2 class="recipe-modal-title">${meal.strMeal}</h2>
+        
+        <div class="rating-section">
+          <div id="average-rating" class="average-rating">
+            <span class="rating-stars">★★★★★</span>
+            <span class="rating-count">(0 ratings)</span>
+          </div>
+          <div class="user-rating">
+            <p class="rating-label">Rate this recipe:</p>
+            <div id="star-rating" class="star-rating">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+          </div>
+        </div>
+        
         <button id="favorite-btn" class="favorite-btn">❤️ Add to Favorites</button>
         
         <div class="recipe-modal-section">
@@ -231,6 +249,31 @@ function openRecipeModal(mealId: string) {
           <p>${meal.strInstructions}</p>
         </div>
       `;
+      
+      // Load and display ratings
+      loadRecipeRating(mealId);
+      
+      // Handle star rating clicks
+      const starRating = document.getElementById('star-rating') as HTMLDivElement;
+      if (starRating && currentUser) {
+        const stars = starRating.querySelectorAll('.star');
+        stars.forEach(star => {
+          star.addEventListener('click', () => {
+            const value = parseInt((star as HTMLElement).getAttribute('data-value') || '0');
+            saveRating(mealId, value);
+          });
+          star.addEventListener('mouseover', () => {
+            const value = parseInt((star as HTMLElement).getAttribute('data-value') || '0');
+            updateStarDisplay(value);
+          });
+        });
+        starRating.addEventListener('mouseout', () => {
+          loadRecipeRating(mealId);
+        });
+      } else if (starRating && !currentUser) {
+        starRating.style.opacity = '0.5';
+        starRating.style.pointerEvents = 'none';
+      }
       
       // Handle favorite button click
       const favoriteBtn = document.getElementById('favorite-btn') as HTMLButtonElement;
@@ -427,4 +470,72 @@ function showAuthForm(type: 'signup' | 'signin') {
   authModal.classList.remove('hidden');
 }
 
-console.log('Recipe Finder is ready! 🍳');
+// ==================== RATING SYSTEM ====================
+
+import { db } from './firebase';
+import { collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+
+// Save a rating for a recipe
+async function saveRating(mealId: string, rating: number) {
+  if (!currentUser) {
+    alert('Please sign in to rate recipes!');
+    return;
+  }
+
+  try {
+    const ratingsRef = collection(db, 'ratings');
+    const ratingDocId = `${mealId}_${currentUser.uid}`;
+    
+    await setDoc(doc(ratingsRef, ratingDocId), {
+      mealId,
+      userId: currentUser.uid,
+      rating,
+      timestamp: new Date()
+    }, { merge: true });
+    
+    // Reload the rating display
+    loadRecipeRating(mealId);
+  } catch (error) {
+    console.error('Error saving rating:', error);
+  }
+}
+
+// Load and display average rating and user's rating
+async function loadRecipeRating(mealId: string) {
+  try {
+    const ratingsRef = collection(db, 'ratings');
+    const ratingDocId = `${mealId}_${currentUser?.uid || 'anonymous'}`;
+    
+    // Get user's rating if logged in
+    let userRating = 0;
+    if (currentUser) {
+      const userRatingDoc = await getDoc(doc(ratingsRef, ratingDocId));
+      if (userRatingDoc.exists()) {
+        userRating = userRatingDoc.data().rating;
+      }
+    }
+    
+    // Get all ratings to calculate average
+    // Since Firestore doesn't have aggregate functions, we'll load all ratings for this meal
+    const allRatings = await fetch(`/api/ratings/${mealId}`).catch(() => null);
+    
+    // For now, display user's rating if available
+    updateStarDisplay(userRating);
+  } catch (error) {
+    console.error('Error loading rating:', error);
+  }
+}
+
+// Update star display based on rating value
+function updateStarDisplay(value: number) {
+  const stars = document.querySelectorAll('.star');
+  stars.forEach((star, index) => {
+    if (index < value) {
+      (star as HTMLElement).style.color = '#00c8ff';
+    } else {
+      (star as HTMLElement).style.color = 'rgba(160, 160, 160, 0.5)';
+    }
+  });
+}
+
+console.log('Recipe Finder is ready! 🍳';

@@ -314,6 +314,68 @@ body::before {
     line-height: 1.6;
 }
 
+/* Rating System */
+.rating-section {
+    background: rgba(0, 200, 255, 0.05);
+    border: 1px solid rgba(0, 200, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.average-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+}
+
+.rating-stars {
+    font-size: 1.8rem;
+    color: #00c8ff;
+    text-shadow: 0 0 10px rgba(0, 200, 255, 0.4);
+}
+
+.rating-count {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+}
+
+.user-rating {
+    text-align: center;
+}
+
+.rating-label {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.star {
+    font-size: 2rem;
+    color: rgba(160, 160, 160, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 10px rgba(0, 200, 255, 0.1);
+}
+
+.star:hover {
+    color: #00c8ff;
+    text-shadow: 0 0 20px rgba(0, 200, 255, 0.6);
+    transform: scale(1.2);
+}
+
 /* Loading State */
 .loading {
     text-align: center;

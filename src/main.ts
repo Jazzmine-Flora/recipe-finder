@@ -48,12 +48,11 @@ onAuthChange((user) => {
 // Initialize theme from localStorage
 function initializeTheme() {
   const savedTheme = localStorage.getItem('theme') || 'dark';
-  const body = document.documentElement.parentElement as HTMLBodyElement;
   if (savedTheme === 'light') {
-    body.classList.add('light-mode');
+    document.body.classList.add('light-mode');
     themeToggle.textContent = '☀️';
   } else {
-    body.classList.remove('light-mode');
+    document.body.classList.remove('light-mode');
     themeToggle.textContent = '🌙';
   }
 }
@@ -63,8 +62,7 @@ initializeTheme();
 
 // Theme toggle button
 themeToggle.addEventListener('click', () => {
-  const body = document.documentElement.parentElement as HTMLBodyElement;
-  const isLightMode = body.classList.toggle('light-mode');
+  const isLightMode = document.body.classList.toggle('light-mode');
   localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
   themeToggle.textContent = isLightMode ? '☀️' : '🌙';
 });

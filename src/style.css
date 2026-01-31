@@ -11,7 +11,7 @@ html {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #fafbfc 0%, #f0f3f7 100%);
+    background: #ffffff;
     min-height: 100vh;
     color: #333;
 }
@@ -121,7 +121,7 @@ body {
 
 .section-title {
     text-align: center;
-    color: white;
+    color: #333;
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
 }
@@ -248,7 +248,7 @@ body {
 /* Loading State */
 .loading {
     text-align: center;
-    color: white;
+    color: #667eea;
     font-size: 1.2rem;
     padding: 2rem;
 }

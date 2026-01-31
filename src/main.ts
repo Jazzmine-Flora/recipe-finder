@@ -15,6 +15,13 @@ const favoritesCount = document.getElementById('favorites-count') as HTMLSpanEle
 const sectionTitle = document.getElementById('section-title') as HTMLHeadingElement;
 const viewTrendingBtn = document.getElementById('view-trending-btn') as HTMLButtonElement;
 
+// Filter elements
+const filterVegetarian = document.getElementById('filter-vegetarian') as HTMLInputElement;
+const filterVegan = document.getElementById('filter-vegan') as HTMLInputElement;
+const filterGlutenFree = document.getElementById('filter-gluten-free') as HTMLInputElement;
+const filterDairyFree = document.getElementById('filter-dairy-free') as HTMLInputElement;
+const filterCuisine = document.getElementById('filter-cuisine') as HTMLSelectElement;
+
 // Auth elements
 const authButtons = document.getElementById('auth-buttons') as HTMLDivElement;
 const userInfo = document.getElementById('user-info') as HTMLDivElement;
@@ -79,6 +86,13 @@ searchInput.addEventListener('keypress', (event) => {
   }
 });
 
+// Add filter event listeners
+filterVegetarian.addEventListener('change', handleSearch);
+filterVegan.addEventListener('change', handleSearch);
+filterGlutenFree.addEventListener('change', handleSearch);
+filterDairyFree.addEventListener('change', handleSearch);
+filterCuisine.addEventListener('change', handleSearch);
+
 // Function to handle search
 function handleSearch() {
   const query = searchInput.value; // Get what the user typed
@@ -116,8 +130,29 @@ function handleSearch() {
         return;
       }
       console.log('Recipes found:', data.meals.length);
-      lastSearchResults = data.meals; // Save search results
-      displayRecipes(data.meals);
+      let filteredMeals = data.meals || [];
+      
+      // Apply filters
+      const selectedCuisine = filterCuisine.value;
+      if (selectedCuisine) {
+        filteredMeals = filteredMeals.filter((meal: any) => meal.strArea === selectedCuisine);
+      }
+      
+      // Filter by dietary restrictions (check meal names/tags)
+      if (filterVegetarian.checked) {
+        filteredMeals = filteredMeals.filter((meal: any) => 
+          meal.strTags?.includes('Vegetarian') || meal.strMeal?.toLowerCase().includes('vegetarian')
+        );
+      }
+      
+      if (filterVegan.checked) {
+        filteredMeals = filteredMeals.filter((meal: any) => 
+          meal.strTags?.includes('Vegan') || meal.strMeal?.toLowerCase().includes('vegan')
+        );
+      }
+      
+      lastSearchResults = filteredMeals;
+      displayRecipes(filteredMeals);
     })
     .catch(error => {
       console.error('Error fetching recipes:', error);

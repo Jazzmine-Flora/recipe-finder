@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+    <header class="header">
+        <h1>🍳 Recipe Finder</h1>
+        <p class="subtitle">Discover delicious recipes from around the world</p>
+        <button id="view-favorites-btn" class="view-favorites-btn">❤️ View Favorites (<span id="favorites-count">0</span>)</button>
+    </header>
+
+    <main class="main-content">
+        <section class="search-section">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    class="search-input" 
+                    placeholder="Search for recipes..."
+                >
+                <button id="search-button" class="search-button">Search</button>
+            </div>
+        </section>
+
+        <h2 id="section-title" class="section-title">Search Results</h2>
+        <section class="recipes-section">
+            <div id="recipes-container" class="recipes-grid">
+                <!-- Recipe cards will be added here dynamically -->
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+
+    <!-- Recipe Modal -->
+    <div id="recipe-modal" class="modal hidden">
+        <div class="modal-content">
+            <button id="modal-close" class="modal-close">&times;</button>
+            <div id="modal-body">
+                <!-- Recipe details will be inserted here -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

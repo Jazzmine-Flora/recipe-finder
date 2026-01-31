@@ -14,6 +14,7 @@ const viewFavoritesBtn = document.getElementById('view-favorites-btn') as HTMLBu
 const favoritesCount = document.getElementById('favorites-count') as HTMLSpanElement;
 const sectionTitle = document.getElementById('section-title') as HTMLHeadingElement;
 const viewTrendingBtn = document.getElementById('view-trending-btn') as HTMLButtonElement;
+const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
 
 // Filter elements
 const filterVegetarian = document.getElementById('filter-vegetarian') as HTMLInputElement;
@@ -42,6 +43,30 @@ let currentUser: any = null;
 onAuthChange((user) => {
   currentUser = user;
   updateAuthUI();
+});
+
+// Initialize theme from localStorage
+function initializeTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  const body = document.documentElement.parentElement as HTMLBodyElement;
+  if (savedTheme === 'light') {
+    body.classList.add('light-mode');
+    themeToggle.textContent = '☀️';
+  } else {
+    body.classList.remove('light-mode');
+    themeToggle.textContent = '🌙';
+  }
+}
+
+// Initialize theme on page load
+initializeTheme();
+
+// Theme toggle button
+themeToggle.addEventListener('click', () => {
+  const body = document.documentElement.parentElement as HTMLBodyElement;
+  const isLightMode = body.classList.toggle('light-mode');
+  localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+  themeToggle.textContent = isLightMode ? '☀️' : '🌙';
 });
 
 // Sign up button

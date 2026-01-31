@@ -16,6 +16,12 @@ body {
     color: #e0e0e0;
     position: relative;
     overflow-x: hidden;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+body.light-mode {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    color: #333;
 }
 
 body::before {
@@ -29,6 +35,11 @@ body::before {
                 radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
     pointer-events: none;
     z-index: 1;
+    transition: opacity 0.4s ease;
+}
+
+body.light-mode::before {
+    opacity: 0.3;
 }
 
 /* Header */
@@ -72,6 +83,45 @@ body::before {
     font-weight: 800;
     letter-spacing: 2px;
     text-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+    transition: text-shadow 0.4s ease;
+}
+
+body.light-mode .header h1 {
+    text-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
+}
+
+.theme-toggle {
+    background: rgba(0, 200, 255, 0.15);
+    border: 2px solid rgba(0, 200, 255, 0.3);
+    color: #00c8ff;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.theme-toggle:hover {
+    background: rgba(0, 200, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
+    border-color: rgba(0, 200, 255, 0.6);
+}
+
+body.light-mode .theme-toggle {
+    background: rgba(102, 126, 234, 0.15);
+    border-color: rgba(102, 126, 234, 0.3);
+    color: #667eea;
+}
+
+body.light-mode .theme-toggle:hover {
+    background: rgba(102, 126, 234, 0.3);
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+    border-color: rgba(102, 126, 234, 0.6);
 }
 
 .auth-buttons, .user-info {
@@ -853,3 +903,256 @@ body::before {
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
+
+/* Light Mode Overrides */
+body.light-mode .header {
+    background: rgba(245, 247, 250, 0.9);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1), inset 0 1px 0 rgba(102, 126, 234, 0.2);
+    border-bottom-color: rgba(102, 126, 234, 0.2);
+}
+
+body.light-mode .header::before {
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+}
+
+body.light-mode .subtitle {
+    color: #666;
+}
+
+body.light-mode .auth-btn {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7), rgba(142, 68, 173, 0.7));
+    color: #fff;
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.25), inset 0 0 20px rgba(102, 126, 234, 0.05);
+}
+
+body.light-mode .auth-btn:hover {
+    box-shadow: 0 0 30px rgba(102, 126, 234, 0.4), inset 0 0 20px rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.6);
+}
+
+body.light-mode .auth-btn.logout {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.7), rgba(255, 69, 0, 0.7));
+    border-color: rgba(220, 53, 69, 0.4);
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.25), inset 0 0 20px rgba(220, 53, 69, 0.05);
+}
+
+body.light-mode .auth-btn.logout:hover {
+    box-shadow: 0 0 30px rgba(220, 53, 69, 0.4), inset 0 0 20px rgba(220, 53, 69, 0.1);
+    border-color: rgba(220, 53, 69, 0.6);
+}
+
+body.light-mode .user-email {
+    color: #667eea;
+}
+
+body.light-mode .view-favorites-btn,
+body.light-mode .view-trending-btn {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7), rgba(142, 68, 173, 0.7));
+    color: #fff;
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 25px rgba(102, 126, 234, 0.25), inset 0 0 20px rgba(102, 126, 234, 0.05);
+}
+
+body.light-mode .view-favorites-btn:hover,
+body.light-mode .view-trending-btn:hover {
+    box-shadow: 0 0 35px rgba(102, 126, 234, 0.4), inset 0 0 20px rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.6);
+}
+
+body.light-mode .view-trending-btn {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.7), rgba(255, 69, 0, 0.7));
+    border-color: rgba(255, 107, 107, 0.4);
+    box-shadow: 0 0 25px rgba(255, 107, 107, 0.25), inset 0 0 20px rgba(255, 107, 107, 0.05);
+}
+
+body.light-mode .view-trending-btn:hover {
+    box-shadow: 0 0 35px rgba(255, 107, 107, 0.4), inset 0 0 20px rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.6);
+}
+
+body.light-mode .search-container {
+    background: rgba(232, 236, 241, 0.8);
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+body.light-mode #search-input {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+body.light-mode #search-input::placeholder {
+    color: #999;
+}
+
+body.light-mode #search-button {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7), rgba(142, 68, 173, 0.7));
+    color: #fff;
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.25);
+}
+
+body.light-mode #search-button:hover {
+    box-shadow: 0 0 30px rgba(102, 126, 234, 0.4);
+    border-color: rgba(102, 126, 234, 0.6);
+}
+
+body.light-mode .recipe-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(102, 126, 234, 0.2);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+}
+
+body.light-mode .recipe-card:hover {
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 12px 48px rgba(102, 126, 234, 0.2);
+}
+
+body.light-mode .recipe-card h3 {
+    color: #333;
+}
+
+body.light-mode .favorite-btn {
+    color: #ff6b6b;
+    border-color: rgba(255, 107, 107, 0.3);
+}
+
+body.light-mode .favorite-btn:hover {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.5);
+}
+
+body.light-mode .favorite-btn.active {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.15);
+    border-color: rgba(255, 107, 107, 0.5);
+}
+
+body.light-mode #recipe-modal {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+body.light-mode .modal-content {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    border-color: rgba(102, 126, 234, 0.3);
+    color: #333;
+}
+
+body.light-mode .modal-content h2,
+body.light-mode .modal-content h3 {
+    color: #333;
+}
+
+body.light-mode .modal-content p,
+body.light-mode .modal-content li {
+    color: #555;
+}
+
+body.light-mode .rating-section {
+    border-top-color: rgba(102, 126, 234, 0.2);
+    border-bottom-color: rgba(102, 126, 234, 0.2);
+}
+
+body.light-mode .rating-label {
+    color: #333;
+}
+
+body.light-mode .star-rating input[type="radio"]:checked ~ label {
+    color: #667eea;
+}
+
+body.light-mode .modal-close {
+    color: #333;
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+body.light-mode .modal-close:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.4);
+}
+
+body.light-mode .filters-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+body.light-mode .filters-container summary {
+    color: #333;
+}
+
+body.light-mode .filter-group label {
+    color: #555;
+}
+
+body.light-mode .filter-group input[type="checkbox"] {
+    accent-color: #667eea;
+}
+
+body.light-mode .filter-group input[type="checkbox"]:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+body.light-mode #filter-cuisine {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+body.light-mode #auth-modal {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+body.light-mode .auth-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+body.light-mode .auth-container h2 {
+    color: #333;
+}
+
+body.light-mode .auth-container input[type="email"],
+body.light-mode .auth-container input[type="password"] {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+body.light-mode .auth-container input[type="email"]::placeholder,
+body.light-mode .auth-container input[type="password"]::placeholder {
+    color: #999;
+}
+
+body.light-mode .auth-form-btn {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7), rgba(142, 68, 173, 0.7));
+    color: #fff;
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.25);
+}
+
+body.light-mode .auth-form-btn:hover {
+    box-shadow: 0 0 30px rgba(102, 126, 234, 0.4);
+    border-color: rgba(102, 126, 234, 0.6);
+}
+
+body.light-mode .toggle-auth {
+    color: #666;
+}
+
+body.light-mode .toggle-auth a {
+    color: #667eea;
+}
+
+body.light-mode .toggle-auth a:hover {
+    color: #8a2be2;
+    text-shadow: 0 0 15px rgba(142, 68, 173, 0.3);
+}
+
+body.light-mode .error-message {
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+    border-left-color: rgba(220, 53, 69, 0.5);
+}
+
+

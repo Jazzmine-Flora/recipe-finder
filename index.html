@@ -8,7 +8,17 @@
 </head>
 <body>
     <header class="header">
-        <h1>🍳 Recipe Finder</h1>
+        <div class="header-top">
+            <h1>🍳 Recipe Finder</h1>
+            <div id="auth-buttons" class="auth-buttons">
+                <button id="signup-btn" class="auth-btn">Sign Up</button>
+                <button id="signin-btn" class="auth-btn">Sign In</button>
+            </div>
+            <div id="user-info" class="user-info hidden">
+                <span id="user-email" class="user-email"></span>
+                <button id="logout-btn" class="auth-btn logout">Sign Out</button>
+            </div>
+        </div>
         <p class="subtitle">Discover delicious recipes from around the world</p>
         <button id="view-favorites-btn" class="view-favorites-btn">❤️ View Favorites (<span id="favorites-count">0</span>)</button>
     </header>
@@ -42,6 +52,16 @@
             <button id="modal-close" class="modal-close">&times;</button>
             <div id="modal-body">
                 <!-- Recipe details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <button id="auth-modal-close" class="modal-close">&times;</button>
+            <div id="auth-form-container">
+                <!-- Auth forms will be inserted here -->
             </div>
         </div>
     </div>

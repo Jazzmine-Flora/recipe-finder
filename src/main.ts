@@ -1,3 +1,7 @@
+// Import Firebase auth functions
+import { signUp, signIn, logout, onAuthChange, getCurrentUser } from './auth';
+import { auth } from './firebase';
+
 // Step 1: Select HTML elements from the DOM
 // We use 'as' to tell TypeScript what type each element is
 const searchInput = document.getElementById('search-input') as HTMLInputElement;
@@ -10,9 +14,58 @@ const viewFavoritesBtn = document.getElementById('view-favorites-btn') as HTMLBu
 const favoritesCount = document.getElementById('favorites-count') as HTMLSpanElement;
 const sectionTitle = document.getElementById('section-title') as HTMLHeadingElement;
 
-// Track current view
+// Auth elements
+const authButtons = document.getElementById('auth-buttons') as HTMLDivElement;
+const userInfo = document.getElementById('user-info') as HTMLDivElement;
+const userEmail = document.getElementById('user-email') as HTMLSpanElement;
+const signupBtn = document.getElementById('signup-btn') as HTMLButtonElement;
+const signinBtn = document.getElementById('signin-btn') as HTMLButtonElement;
+const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
+const authModal = document.getElementById('auth-modal') as HTMLDivElement;
+const authFormContainer = document.getElementById('auth-form-container') as HTMLDivElement;
+const authModalClose = document.getElementById('auth-modal-close') as HTMLButtonElement;
+
+// Track current view and user
 let currentView: 'search' | 'favorites' = 'search';
 let lastSearchResults: any[] = []; // Store last search results
+let currentUser: any = null;
+
+// Track current user auth state
+onAuthChange((user) => {
+  currentUser = user;
+  updateAuthUI();
+});
+
+// Sign up button
+signupBtn.addEventListener('click', () => {
+  showAuthForm('signup');
+});
+
+// Sign in button
+signinBtn.addEventListener('click', () => {
+  showAuthForm('signin');
+});
+
+// Sign out button
+logoutBtn.addEventListener('click', async () => {
+  try {
+    await logout();
+    updateAuthUI();
+  } catch (error) {
+    alert('Error signing out');
+  }
+});
+
+// Close auth modal
+authModalClose.addEventListener('click', () => {
+  authModal.classList.add('hidden');
+});
+
+authModal.addEventListener('click', (event) => {
+  if (event.target === authModal) {
+    authModal.classList.add('hidden');
+  }
+});
 
 // Step 2: Add an event listener to the button
 // When the user clicks it, the callback function runs
@@ -259,5 +312,96 @@ function updateFavoritesCount() {
 
 // Initialize favorites count on page load
 updateFavoritesCount();
+
+// ==================== AUTHENTICATION FUNCTIONS ====================
+
+// Update UI based on auth state
+function updateAuthUI() {
+  if (currentUser) {
+    // User is logged in
+    authButtons.classList.add('hidden');
+    userInfo.classList.remove('hidden');
+    userEmail.textContent = currentUser.email;
+    viewFavoritesBtn.disabled = false;
+    updateFavoritesCount(); // Show their favorites count
+  } else {
+    // User is logged out
+    authButtons.classList.remove('hidden');
+    userInfo.classList.add('hidden');
+    viewFavoritesBtn.disabled = true;
+    favoritesCount.textContent = '0'; // Reset count to 0
+    viewFavoritesBtn.textContent = `❤️ View Favorites (0)`; // Reset button text
+    recipesContainer.innerHTML = '<p class="loading">🔐 Please sign in to view your favorites</p>';
+  }
+}
+
+// Show auth form (signup or signin)
+function showAuthForm(type: 'signup' | 'signin') {
+  const isSignup = type === 'signup';
+  
+  authFormContainer.innerHTML = `
+    <form class="auth-form" id="auth-form">
+      <h2>${isSignup ? 'Create Account' : 'Sign In'}</h2>
+      
+      <div class="error-message" id="error-message"></div>
+      
+      <div class="form-group">
+        <label for="auth-email">Email</label>
+        <input type="email" id="auth-email" required placeholder="your@email.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="auth-password">Password</label>
+        <input type="password" id="auth-password" required placeholder="At least 6 characters">
+      </div>
+      
+      <button type="submit" class="auth-submit-btn">${isSignup ? 'Sign Up' : 'Sign In'}</button>
+      
+      <div class="toggle-auth">
+        ${isSignup 
+          ? 'Already have an account? <a id="toggle-signin">Sign In</a>' 
+          : 'Don\'t have an account? <a id="toggle-signup">Sign Up</a>'}
+      </div>
+    </form>
+  `;
+  
+  // Add form submission handler
+  const authForm = document.getElementById('auth-form') as HTMLFormElement;
+  const errorMessage = document.getElementById('error-message') as HTMLDivElement;
+  const emailInput = document.getElementById('auth-email') as HTMLInputElement;
+  const passwordInput = document.getElementById('auth-password') as HTMLInputElement;
+  
+  authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    
+    try {
+      if (isSignup) {
+        await signUp(email, password);
+      } else {
+        await signIn(email, password);
+      }
+      authModal.classList.add('hidden');
+      updateAuthUI();
+    } catch (error: any) {
+      errorMessage.classList.add('show');
+      errorMessage.textContent = error.message;
+    }
+  });
+  
+  // Toggle between sign up and sign in
+  const toggleSignup = document.getElementById('toggle-signup');
+  const toggleSignin = document.getElementById('toggle-signin');
+  
+  if (toggleSignup) {
+    toggleSignup.addEventListener('click', () => showAuthForm('signup'));
+  }
+  if (toggleSignin) {
+    toggleSignin.addEventListener('click', () => showAuthForm('signin'));
+  }
+  
+  authModal.classList.remove('hidden');
+}
 
 console.log('Recipe Finder is ready! 🍳');

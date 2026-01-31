@@ -1,6 +1,5 @@
 // Import Firebase auth functions
-import { signUp, signIn, logout, onAuthChange, getCurrentUser } from './auth';
-import { auth } from './firebase';
+import { signUp, signIn, logout, onAuthChange } from './auth';
 
 // Step 1: Select HTML elements from the DOM
 // We use 'as' to tell TypeScript what type each element is
@@ -572,7 +571,7 @@ function showAuthForm(type: 'signup' | 'signin') {
 // ==================== RATING SYSTEM ====================
 
 import { db } from './firebase';
-import { collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Save a rating for a recipe
 async function saveRating(mealId: string, rating: number) {
@@ -613,10 +612,6 @@ async function loadRecipeRating(mealId: string) {
         userRating = userRatingDoc.data().rating;
       }
     }
-    
-    // Get all ratings to calculate average
-    // Since Firestore doesn't have aggregate functions, we'll load all ratings for this meal
-    const allRatings = await fetch(`/api/ratings/${mealId}`).catch(() => null);
     
     // For now, display user's rating if available
     updateStarDisplay(userRating);

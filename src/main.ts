@@ -35,7 +35,7 @@ const authFormContainer = document.getElementById('auth-form-container') as HTML
 const authModalClose = document.getElementById('auth-modal-close') as HTMLButtonElement;
 
 // Track current view and user
-let currentView: 'search' | 'favorites' = 'search';
+let currentView: 'search' | 'favorites' | 'trending' = 'search';
 let lastSearchResults: any[] = []; // Store last search results
 let currentUser: any = null;
 
@@ -127,10 +127,14 @@ function handleSearch() {
     return;
   }
 
-  // Switch to search view if we're in favorites
+  // Switch to search view if we're in favorites or trending
   if (currentView === 'favorites') {
     currentView = 'search';
     updateFavoritesCount();
+    sectionTitle.textContent = 'Search Results';
+  } else if (currentView === 'trending') {
+    currentView = 'search';
+    viewTrendingBtn.style.display = 'block';
     sectionTitle.textContent = 'Search Results';
   }
   
@@ -230,10 +234,27 @@ viewFavoritesBtn.addEventListener('click', () => {
 viewTrendingBtn.addEventListener('click', () => {
   if (currentView !== 'trending') {
     displayTrendingRecipes();
-    currentView = 'trending' as any;
+    currentView = 'trending';
     viewFavoritesBtn.textContent = `⬅️ Back to Search`;
     viewTrendingBtn.style.display = 'none';
     sectionTitle.textContent = '🔥 Trending Now';
+  } else {
+    // Switch back to search view
+    if (lastSearchResults.length > 0) {
+      displayRecipes(lastSearchResults);
+    } else {
+      recipesContainer.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-state-icon">🔍</span>
+          <h3 class="empty-state-title">Start Cooking!</h3>
+          <p class="empty-state-message">Search for your favorite recipes using the search box above.</p>
+        </div>
+      `;
+    }
+    currentView = 'search';
+    updateFavoritesCount();
+    viewTrendingBtn.style.display = 'block';
+    sectionTitle.textContent = 'Search Results';
   }
 });
 
@@ -638,4 +659,5 @@ async function displayTrendingRecipes() {
     recipesContainer.innerHTML = '<p class="error">Failed to load trending recipes. Try again!</p>';
   }
 }
-console.log('Recipe Finder is ready! 🍳';
+console.log('Recipe Finder is ready! 🍳');
+

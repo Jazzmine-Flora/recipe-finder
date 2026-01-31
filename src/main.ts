@@ -306,7 +306,13 @@ function displayFavorites() {
   recipesContainer.innerHTML = '';
   
   if (favorites.length === 0) {
-    recipesContainer.innerHTML = '<p class="loading">No favorites yet! Search for recipes and add them to your favorites.</p>';
+    recipesContainer.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon">💔</span>
+        <h3 class="empty-state-title">No Favorites Yet!</h3>
+        <p class="empty-state-message">Search for recipes and add them to your favorites to see them here.</p>
+      </div>
+    `;
     return;
   }
   

@@ -149,7 +149,13 @@ viewFavoritesBtn.addEventListener('click', () => {
     if (lastSearchResults.length > 0) {
       displayRecipes(lastSearchResults);
     } else {
-      recipesContainer.innerHTML = '<p class="loading">Search for recipes using the search box above!</p>';
+      recipesContainer.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-state-icon">🔍</span>
+          <h3 class="empty-state-title">Start Cooking!</h3>
+          <p class="empty-state-message">Search for your favorite recipes using the search box above.</p>
+        </div>
+      `;
     }
     currentView = 'search';
     updateFavoritesCount();

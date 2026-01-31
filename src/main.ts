@@ -13,6 +13,7 @@ const modalClose = document.getElementById('modal-close') as HTMLButtonElement;
 const viewFavoritesBtn = document.getElementById('view-favorites-btn') as HTMLButtonElement;
 const favoritesCount = document.getElementById('favorites-count') as HTMLSpanElement;
 const sectionTitle = document.getElementById('section-title') as HTMLHeadingElement;
+const viewTrendingBtn = document.getElementById('view-trending-btn') as HTMLButtonElement;
 
 // Auth elements
 const authButtons = document.getElementById('auth-buttons') as HTMLDivElement;
@@ -143,6 +144,7 @@ viewFavoritesBtn.addEventListener('click', () => {
     displayFavorites();
     currentView = 'favorites';
     viewFavoritesBtn.textContent = `⬅️ Back to Search`;
+    viewTrendingBtn.style.display = 'none';
     sectionTitle.textContent = 'My Favorites';
   } else {
     // Switch back to search view
@@ -159,7 +161,19 @@ viewFavoritesBtn.addEventListener('click', () => {
     }
     currentView = 'search';
     updateFavoritesCount();
+    viewTrendingBtn.style.display = 'block';
     sectionTitle.textContent = 'Search Results';
+  }
+});
+
+// View trending button click
+viewTrendingBtn.addEventListener('click', () => {
+  if (currentView !== 'trending') {
+    displayTrendingRecipes();
+    currentView = 'trending' as any;
+    viewFavoritesBtn.textContent = `⬅️ Back to Search`;
+    viewTrendingBtn.style.display = 'none';
+    sectionTitle.textContent = '🔥 Trending Now';
   }
 });
 
@@ -537,5 +551,31 @@ function updateStarDisplay(value: number) {
     }
   });
 }
+// ==================== TRENDING RECIPES ====================
 
+// Display trending recipes (most popular meals)
+async function displayTrendingRecipes() {
+  // Popular meal IDs from TheMealDB
+  const trendingMealIds = ['52772', '52977', '53013', '52975', '52958', '52813', '52855', '52874'];
+  
+  recipesContainer.innerHTML = '<p class="loading">🔥 Loading trending recipes...</p>';
+  
+  try {
+    const trendingRecipes: any[] = [];
+    
+    // Fetch details for each trending meal
+    for (const mealId of trendingMealIds) {
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
+      const data = await response.json();
+      if (data.meals) {
+        trendingRecipes.push(data.meals[0]);
+      }
+    }
+    
+    displayRecipes(trendingRecipes);
+  } catch (error) {
+    console.error('Error fetching trending recipes:', error);
+    recipesContainer.innerHTML = '<p class="error">Failed to load trending recipes. Try again!</p>';
+  }
+}
 console.log('Recipe Finder is ready! 🍳';

@@ -100,16 +100,27 @@ function handleSearch() {
   recipesContainer.innerHTML = '<p class="loading">🍳 Loading recipes...</p>';
   
   // Fetch recipes from TheMealDB API
-  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
-    .then(response => response.json())
+  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
-      console.log('Recipes found:', data);
-      lastSearchResults = data.meals || []; // Save search results
+      console.log('API Response:', data);
+      if (!data.meals) {
+        recipesContainer.innerHTML = '<p class="loading">No recipes found for "' + query + '". Try a different search!</p>';
+        lastSearchResults = [];
+        return;
+      }
+      console.log('Recipes found:', data.meals.length);
+      lastSearchResults = data.meals; // Save search results
       displayRecipes(data.meals);
     })
     .catch(error => {
       console.error('Error fetching recipes:', error);
-      recipesContainer.innerHTML = '<p class="error">Failed to fetch recipes. Try again!</p>';
+      recipesContainer.innerHTML = '<p class="error">Failed to fetch recipes. Please try again!</p>';
     });
 }
 

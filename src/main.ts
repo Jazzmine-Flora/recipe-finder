@@ -490,7 +490,13 @@ function updateAuthUI() {
     viewFavoritesBtn.disabled = true;
     favoritesCount.textContent = '0'; // Reset count to 0
     viewFavoritesBtn.textContent = `❤️ View Favorites (0)`; // Reset button text
-    recipesContainer.innerHTML = '<p class="loading">🔐 Please sign in to view your favorites</p>';
+    recipesContainer.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon">🔐</span>
+        <h3 class="empty-state-title">Sign In Required</h3>
+        <p class="empty-state-message">Please sign in to view your favorites</p>
+      </div>
+    `;
   }
 }
 

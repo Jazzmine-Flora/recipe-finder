@@ -608,6 +608,27 @@ body.light-mode .theme-toggle:hover {
         font-size: 2rem;
     }
 
+    .header-top {
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .auth-buttons, .user-info {
+        gap: 0.5rem;
+    }
+
+    .auth-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
     .search-container {
         flex-direction: column;
     }

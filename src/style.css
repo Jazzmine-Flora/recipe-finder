@@ -599,15 +599,15 @@ body.dark-mode .theme-toggle:hover {
     font-size: 4rem;
     margin-bottom: 1rem;
     display: block;
-    filter: drop-shadow(0 0 10px rgba(0, 200, 255, 0.3));
+    filter: drop-shadow(0 0 10px rgba(199, 124, 81, 0.3));
 }
 
 .empty-state-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #00c8ff;
+    color: #c9764d;
     margin-bottom: 0.5rem;
-    text-shadow: 0 0 15px rgba(0, 200, 255, 0.2);
+    text-shadow: 0 0 15px rgba(199, 124, 81, 0.2);
 }
 
 .empty-state-message {

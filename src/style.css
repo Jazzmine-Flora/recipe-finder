@@ -195,7 +195,7 @@ body.dark-mode .theme-toggle:hover {
     margin-top: 1.5rem;
     padding: 0.9rem 1.8rem;
     font-size: 1rem;
-    min-width: 240px;
+    width: 240px;
     text-align: center;
     background: linear-gradient(135deg, rgba(212, 140, 72, 0.9), rgba(199, 124, 81, 0.9));
     color: #fff;
@@ -223,16 +223,11 @@ body.dark-mode .theme-toggle:hover {
     margin-top: 1.5rem;
 }
 
-.header-buttons button {
-    min-width: 240px;
-    text-align: center;
-}
-
 .view-trending-btn {
-    margin-top: 0;
+    margin-top: 1.5rem;
     padding: 0.9rem 1.8rem;
     font-size: 1rem;
-    min-width: 240px;
+    width: 240px;
     text-align: center;
     background: linear-gradient(135deg, rgba(224, 142, 121, 0.9), rgba(207, 114, 85, 0.9));
     color: #fff;

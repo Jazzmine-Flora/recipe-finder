@@ -450,8 +450,7 @@ body.dark-mode .theme-toggle:hover {
 
 .recipes-section {
     min-height: 400px; /* Ensure section is visible */
-    display: flex;
-    justify-content: center;
+    width: 100%;
 }
 
 /* Recipe Card */

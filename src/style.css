@@ -36,23 +36,24 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    font-size: 3rem;
-    opacity: 0.04;
+    font-size: 4rem;
+    opacity: 0.12;
     pointer-events: none;
     z-index: 0;
     overflow: hidden;
-    line-height: 1.8;
+    line-height: 1.5;
     white-space: pre-wrap;
     word-wrap: break-word;
     transition: opacity 0.4s ease;
+    color: rgba(199, 124, 81, 0.5);
 }
 
 body.dark-mode::before {
-    opacity: 0.05;
+    opacity: 0.08;
 }
 
 html.dark-mode body::before {
-    opacity: 0.05;
+    opacity: 0.08;
 }
 
 body::after {

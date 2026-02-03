@@ -30,26 +30,15 @@ html.dark-mode body {
 }
 
 body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100vh;
-    background-image: none;
-    pointer-events: none;
-    z-index: 2;
-    transition: opacity 0.4s ease;
-}
-    align-content: flex-start;
+    display: none;
 }
 
 body.dark-mode::before {
-    opacity: 0.1;
+    display: none;
 }
 
 html.dark-mode body::before {
-    opacity: 0.1;
+    display: none;
 }
 
 body::after {

@@ -24,6 +24,11 @@ body.dark-mode {
     color: #f3e7dc;
 }
 
+html.dark-mode body {
+    background: linear-gradient(135deg, #2b221c 0%, #33271f 50%, #3b2e26 100%);
+    color: #f3e7dc;
+}
+
 body::before {
     content: '';
     position: fixed;
@@ -39,6 +44,10 @@ body::before {
 }
 
 body.dark-mode::before {
+    opacity: 0.6;
+}
+
+html.dark-mode body::before {
     opacity: 0.6;
 }
 
@@ -212,6 +221,11 @@ body.dark-mode .theme-toggle:hover {
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 1.5rem;
+}
+
+.header-buttons button {
+    min-width: 240px;
+    text-align: center;
 }
 
 .view-trending-btn {

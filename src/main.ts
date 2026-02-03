@@ -51,6 +51,7 @@ function initializeTheme() {
   const shouldUseDark = savedTheme ? savedTheme === 'dark' : prefersDark;
 
   document.body.classList.toggle('dark-mode', shouldUseDark);
+  document.documentElement.classList.toggle('dark-mode', shouldUseDark);
   document.body.classList.remove('light-mode');
   themeToggle.textContent = shouldUseDark ? '☀️' : '🌙';
 }
@@ -61,6 +62,7 @@ initializeTheme();
 // Theme toggle button
 themeToggle.addEventListener('click', () => {
   const isDarkMode = document.body.classList.toggle('dark-mode');
+  document.documentElement.classList.toggle('dark-mode', isDarkMode);
   document.body.classList.remove('light-mode');
   localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   themeToggle.textContent = isDarkMode ? '☀️' : '🌙';

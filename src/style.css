@@ -36,23 +36,24 @@ body::before {
     left: 0;
     width: 100%;
     min-height: 100vh;
-    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='0.3'%3E%3C!-- Croissant --%3E%3Cpath d='M30,40 Q20,35 25,30 Q35,25 45,30 Q50,35 40,40 L35,50 Q30,48 30,40Z' fill='%23d4a574' stroke='%23c9764d' stroke-width='1'/%3E%3Cpath d='M28,38 Q26,36 28,34' fill='none' stroke='%23c9764d' stroke-width='0.5'/%3E%3Cpath d='M32,37 Q30,35 32,33' fill='none' stroke='%23c9764d' stroke-width='0.5'/%3E%3C!-- Cupcake --%3E%3Cpath d='M150,50 L160,80 L140,80 Z' fill='%23e8c4a0' stroke='%23c9764d' stroke-width='1'/%3E%3Ccircle cx='150' cy='48' r='8' fill='%23d4a574' stroke='%23c9764d' stroke-width='1'/%3E%3Ccircle cx='150' cy='45' r='3' fill='%23cf7255'/%3E%3C!-- Bread loaf --%3E%3Cellipse cx='80' cy='150' rx='25' ry='15' fill='%23daa76d' stroke='%23c9764d' stroke-width='1'/%3E%3Cpath d='M60,150 Q65,145 70,150' fill='none' stroke='%23c9764d' stroke-width='0.5'/%3E%3Cpath d='M70,150 Q75,145 80,150' fill='none' stroke='%23c9764d' stroke-width='0.5'/%3E%3Cpath d='M80,150 Q85,145 90,150' fill='none' stroke='%23c9764d' stroke-width='0.5'/%3E%3C!-- Cookie --%3E%3Ccircle cx='170' cy='150' r='12' fill='%23d4a574' stroke='%23c9764d' stroke-width='1'/%3E%3Ccircle cx='165' cy='145' r='2' fill='%238b5a3c'/%3E%3Ccircle cx='175' cy='148' r='2' fill='%238b5a3c'/%3E%3Ccircle cx='170' cy='155' r='2' fill='%238b5a3c'/%3E%3C!-- Cake slice --%3E%3Cpath d='M40,120 L50,160 L30,160 Z' fill='%23f5e6d3' stroke='%23c9764d' stroke-width='1'/%3E%3Crect x='30' y='160' width='20' height='8' fill='%23d4a574' stroke='%23c9764d' stroke-width='1'/%3E%3Cline x1='35' y1='130' x2='45' y2='130' stroke='%23e8a5a5' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-image: url('https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop');
     background-repeat: repeat;
-    background-size: 200px 200px;
-    opacity: 1;
+    background-size: 400px 400px;
+    opacity: 0.15;
     pointer-events: none;
     z-index: 2;
     transition: opacity 0.4s ease;
+    filter: sepia(20%) saturate(80%);
 }
     align-content: flex-start;
 }
 
 body.dark-mode::before {
-    opacity: 0.7;
+    opacity: 0.1;
 }
 
 html.dark-mode body::before {
-    opacity: 0.7;
+    opacity: 0.1;
 }
 
 body::after {

@@ -153,7 +153,13 @@ function handleSearch() {
     .then(data => {
       console.log('API Response:', data);
       if (!data.meals) {
-        recipesContainer.innerHTML = '<p class="loading">No recipes found for "' + query + '". Try a different search!</p>';
+        recipesContainer.innerHTML = `
+          <div class="empty-state">
+            <span class="empty-state-icon">🔍</span>
+            <h3 class="empty-state-title">No Recipes Found</h3>
+            <p class="empty-state-message">No recipes found for "${query}". Try a different search!</p>
+          </div>
+        `;
         lastSearchResults = [];
         return;
       }
@@ -263,7 +269,13 @@ function displayRecipes(meals: any[]) {
   recipesContainer.innerHTML = '';
   
   if (!meals || meals.length === 0) {
-    recipesContainer.innerHTML = '<p class="loading">No recipes found. Try a different search!</p>';
+    recipesContainer.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon">🔍</span>
+        <h3 class="empty-state-title">No Recipes Found</h3>
+        <p class="empty-state-message">No recipes found. Try a different search!</p>
+      </div>
+    `;
     return;
   }
   

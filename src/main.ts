@@ -1,5 +1,6 @@
-// Import Firebase auth functions
+// Import Supabase auth functions
 import { signUp, signIn, logout, onAuthChange } from './auth';
+import { supabase } from './supabase';
 
 // Step 1: Select HTML elements from the DOM
 // We use 'as' to tell TypeScript what type each element is
@@ -584,9 +585,6 @@ function showAuthForm(type: 'signup' | 'signin') {
 
 // ==================== RATING SYSTEM ====================
 
-import { db } from './firebase';
-import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
-
 // Save a rating for a recipe
 async function saveRating(mealId: string, rating: number) {
   if (!currentUser) {
@@ -595,15 +593,17 @@ async function saveRating(mealId: string, rating: number) {
   }
 
   try {
-    const ratingsRef = collection(db, 'ratings');
-    const ratingDocId = `${mealId}_${currentUser.uid}`;
-    
-    await setDoc(doc(ratingsRef, ratingDocId), {
-      mealId,
-      userId: currentUser.uid,
-      rating,
-      timestamp: new Date()
-    }, { merge: true });
+    const { error } = await supabase
+      .from('ratings')
+      .upsert(
+        {
+          meal_id: mealId,
+          user_id: currentUser.id,
+          rating
+        },
+        { onConflict: 'meal_id,user_id' }
+      );
+    if (error) throw error;
     
     // Reload the rating display
     loadRecipeRating(mealId);
@@ -615,16 +615,16 @@ async function saveRating(mealId: string, rating: number) {
 // Load and display average rating and user's rating
 async function loadRecipeRating(mealId: string) {
   try {
-    const ratingsRef = collection(db, 'ratings');
-    const ratingDocId = `${mealId}_${currentUser?.uid || 'anonymous'}`;
-    
-    // Get user's rating if logged in
     let userRating = 0;
     if (currentUser) {
-      const userRatingDoc = await getDoc(doc(ratingsRef, ratingDocId));
-      if (userRatingDoc.exists()) {
-        userRating = userRatingDoc.data().rating;
-      }
+      const { data, error } = await supabase
+        .from('ratings')
+        .select('rating')
+        .eq('meal_id', mealId)
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+      if (error) throw error;
+      if (data?.rating) userRating = data.rating;
     }
     
     // For now, display user's rating if available

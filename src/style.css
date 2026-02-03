@@ -10,7 +10,7 @@ html {
 }
 
 body {
-    font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+    font-family: 'Georgia', 'Garamond', serif;
     background: linear-gradient(135deg, #faf5f0 0%, #f5ede4 50%, #f0e6db 100%);
     min-height: 100vh;
     color: #5a4a42;
@@ -193,9 +193,9 @@ body.dark-mode .theme-toggle:hover {
 
 .view-favorites-btn {
     margin-top: 1.5rem;
-    padding: 0.9rem 1.8rem;
-    font-size: 1rem;
-    width: 240px;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.85rem;
+    width: 260px;
     text-align: center;
     background: linear-gradient(135deg, rgba(212, 140, 72, 0.9), rgba(199, 124, 81, 0.9));
     color: #fff;
@@ -225,9 +225,9 @@ body.dark-mode .theme-toggle:hover {
 
 .view-trending-btn {
     margin-top: 1.5rem;
-    padding: 0.9rem 1.8rem;
-    font-size: 1rem;
-    width: 240px;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.85rem;
+    width: 260px;
     text-align: center;
     background: linear-gradient(135deg, rgba(224, 142, 121, 0.9), rgba(207, 114, 85, 0.9));
     color: #fff;

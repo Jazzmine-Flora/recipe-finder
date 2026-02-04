@@ -141,6 +141,7 @@ function handleSearch() {
   console.log('Searching for:', query);
   
   // Show loading message
+  recipesContainer.classList.remove('is-empty');
   recipesContainer.innerHTML = '<p class="loading">🍳 Loading recipes...</p>';
   
   // Fetch recipes from TheMealDB API
@@ -154,6 +155,7 @@ function handleSearch() {
     .then(data => {
       console.log('API Response:', data);
       if (!data.meals) {
+        recipesContainer.classList.add('is-empty');
         recipesContainer.innerHTML = `
           <div class="empty-state">
             <span class="empty-state-icon">🔍</span>
@@ -221,6 +223,7 @@ viewFavoritesBtn.addEventListener('click', () => {
     if (lastSearchResults.length > 0) {
       displayRecipes(lastSearchResults);
     } else {
+      recipesContainer.classList.add('is-empty');
       recipesContainer.innerHTML = `
         <div class="empty-state">
           <span class="empty-state-icon">🔍</span>
@@ -249,6 +252,7 @@ viewTrendingBtn.addEventListener('click', () => {
     if (lastSearchResults.length > 0) {
       displayRecipes(lastSearchResults);
     } else {
+      recipesContainer.classList.add('is-empty');
       recipesContainer.innerHTML = `
         <div class="empty-state">
           <span class="empty-state-icon">🔍</span>
@@ -268,8 +272,10 @@ viewTrendingBtn.addEventListener('click', () => {
 function displayRecipes(meals: any[]) {
   // Clear previous results
   recipesContainer.innerHTML = '';
+  recipesContainer.classList.remove('is-empty');
   
   if (!meals || meals.length === 0) {
+    recipesContainer.classList.add('is-empty');
     recipesContainer.innerHTML = `
       <div class="empty-state">
         <span class="empty-state-icon">🔍</span>
@@ -460,8 +466,10 @@ function updateFavoriteButton(mealId: string, button: HTMLButtonElement) {
 function displayFavorites() {
   const favorites = getFavorites();
   recipesContainer.innerHTML = '';
+  recipesContainer.classList.remove('is-empty');
   
   if (favorites.length === 0) {
+    recipesContainer.classList.add('is-empty');
     recipesContainer.innerHTML = `
       <div class="empty-state">
         <span class="empty-state-icon">💔</span>
@@ -504,6 +512,7 @@ function updateAuthUI() {
     viewFavoritesBtn.disabled = true;
     favoritesCount.textContent = '0'; // Reset count to 0
     viewFavoritesBtn.textContent = `❤️ View Favorites (0)`; // Reset button text
+    recipesContainer.classList.add('is-empty');
     recipesContainer.innerHTML = `
       <div class="empty-state">
         <span class="empty-state-icon">🔐</span>

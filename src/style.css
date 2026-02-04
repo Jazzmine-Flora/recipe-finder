@@ -444,6 +444,16 @@ body.dark-mode .theme-toggle:hover {
     margin: 0 auto;
 }
 
+.recipes-grid.is-empty {
+    display: flex;
+    justify-content: center;
+}
+
+.recipes-grid.is-empty .empty-state {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 .recipes-section {
     min-height: 400px;
     width: 100%;

@@ -10,23 +10,23 @@ html {
 }
 
 body {
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    background: linear-gradient(135deg, #faf5f0 0%, #f5ede4 50%, #f0e6db 100%);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #121214 0%, #1b1b20 50%, #141418 100%);
     min-height: 100vh;
-    color: #5a4a42;
+    color: #e7e3dc;
     position: relative;
     overflow-x: hidden;
     transition: background 0.4s ease, color 0.4s ease;
 }
 
 body.dark-mode {
-    background: linear-gradient(135deg, #2b221c 0%, #33271f 50%, #3b2e26 100%);
-    color: #f3e7dc;
+    background: linear-gradient(135deg, #0f0f12 0%, #1a1a20 50%, #0f1014 100%);
+    color: #f6f2ea;
 }
 
 html.dark-mode body {
-    background: linear-gradient(135deg, #2b221c 0%, #33271f 50%, #3b2e26 100%);
-    color: #f3e7dc;
+    background: linear-gradient(135deg, #0f0f12 0%, #1a1a20 50%, #0f1014 100%);
+    color: #f6f2ea;
 }
 
 body::before {
@@ -48,8 +48,8 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 50%, rgba(218, 165, 122, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(199, 124, 81, 0.03) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 50%, rgba(201, 169, 109, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(160, 128, 64, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
     transition: opacity 0.4s ease;
@@ -65,12 +65,12 @@ html.dark-mode body::after {
 
 /* Header */
 .header {
-    background: linear-gradient(135deg, #fff9f3 0%, #fef4ed 100%);
+    background: linear-gradient(135deg, #1c1c22 0%, #24242b 100%);
     backdrop-filter: blur(20px);
     padding: 2.5rem;
     text-align: center;
-    box-shadow: 0 8px 32px rgba(199, 124, 81, 0.1), inset 0 1px 0 rgba(199, 124, 81, 0.1);
-    border-bottom: 3px solid rgba(218, 165, 122, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(201, 169, 109, 0.1);
+    border-bottom: 1px solid rgba(201, 169, 109, 0.25);
     position: relative;
     z-index: 10;
 }
@@ -82,7 +82,7 @@ html.dark-mode body::after {
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(218, 165, 122, 0.4), transparent);
+    background: linear-gradient(90deg, transparent, rgba(201, 169, 109, 0.5), transparent);
 }
 
 .header-top {
@@ -96,14 +96,14 @@ html.dark-mode body::after {
 
 .header h1 {
     font-size: 2.8rem;
-    background: linear-gradient(135deg, #c9764d, #d4a574);
+    background: linear-gradient(135deg, #e9d6a7, #c9a96d);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0;
     font-weight: 800;
     letter-spacing: 2px;
-    text-shadow: 0 0 20px rgba(199, 124, 81, 0.2);
+    text-shadow: 0 0 20px rgba(201, 169, 109, 0.25);
     transition: text-shadow 0.4s ease;
 }
 
@@ -112,9 +112,9 @@ body.dark-mode .header h1 {
 }
 
 .theme-toggle {
-    background: rgba(218, 165, 122, 0.2);
-    border: 2px solid rgba(218, 165, 122, 0.4);
-    color: #c9764d;
+    background: rgba(201, 169, 109, 0.12);
+    border: 1px solid rgba(201, 169, 109, 0.35);
+    color: #e9d6a7;
     border-radius: 50%;
     width: 45px;
     height: 45px;
@@ -130,9 +130,9 @@ body.dark-mode .header h1 {
 }
 
 .theme-toggle:hover {
-    background: rgba(218, 165, 122, 0.35);
-    box-shadow: 0 0 20px rgba(199, 124, 81, 0.3);
-    border-color: rgba(199, 124, 81, 0.6);
+    background: rgba(201, 169, 109, 0.2);
+    box-shadow: 0 0 20px rgba(201, 169, 109, 0.25);
+    border-color: rgba(201, 169, 109, 0.55);
 }
 
 body.dark-mode .theme-toggle {
@@ -162,37 +162,37 @@ body.dark-mode .theme-toggle:hover {
 .auth-btn {
     padding: 0.7rem 1.4rem;
     font-size: 0.9rem;
-    background: linear-gradient(135deg, rgba(212, 140, 72, 0.9), rgba(199, 124, 81, 0.9));
-    color: #fff;
-    border: 2px solid rgba(199, 124, 81, 0.5);
+    background: linear-gradient(135deg, rgba(201, 169, 109, 0.95), rgba(160, 128, 64, 0.95));
+    color: #1b1b20;
+    border: 1px solid rgba(201, 169, 109, 0.6);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(199, 124, 81, 0.25);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
 
 .auth-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(199, 124, 81, 0.35);
-    border-color: rgba(199, 124, 81, 0.8);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    border-color: rgba(201, 169, 109, 0.9);
 }
 
 .auth-btn.logout {
-    background: linear-gradient(135deg, rgba(224, 142, 121, 0.9), rgba(207, 114, 85, 0.9));
-    border-color: rgba(224, 142, 121, 0.5);
-    box-shadow: 0 4px 15px rgba(224, 142, 121, 0.25);
+    background: linear-gradient(135deg, rgba(220, 196, 156, 0.9), rgba(184, 152, 92, 0.9));
+    border-color: rgba(201, 169, 109, 0.55);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 }
 
 .auth-btn.logout:hover {
-    box-shadow: 0 8px 25px rgba(224, 142, 121, 0.35);
-    border-color: rgba(224, 142, 121, 0.8);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    border-color: rgba(201, 169, 109, 0.9);
 }
 
 .user-email {
-    color: #c9764d;
+    color: #e9d6a7;
     font-weight: 700;
     padding: 0.6rem 0;
     font-size: 0.95rem;

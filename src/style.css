@@ -112,8 +112,8 @@ html.dark-mode body::after {
 }
 
 body.dark-mode .header h1 {
-    background: linear-gradient(135deg, #fce8b8, #f2ddaa);
-    text-shadow: 0 0 24px rgba(216, 177, 91, 0.35);
+    background: linear-gradient(135deg, #fff9e6 10%, #f2ddaa 40%, #d8b15b 100%);
+    text-shadow: 0 0 28px rgba(216, 177, 91, 0.4);
 }
 
 .theme-toggle {

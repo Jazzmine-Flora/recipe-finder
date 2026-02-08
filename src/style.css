@@ -11,9 +11,9 @@ html {
 
 body {
     font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #121214 0%, #1b1b20 50%, #141418 100%);
+    background: linear-gradient(135deg, #f9f5ef 0%, #fef9f2 50%, #f7f3ed 100%);
     min-height: 100vh;
-    color: #e7e3dc;
+    color: #3d3428;
     position: relative;
     overflow-x: hidden;
     transition: background 0.4s ease, color 0.4s ease;
@@ -48,29 +48,33 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 50%, rgba(201, 169, 109, 0.06) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(160, 128, 64, 0.05) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 50%, rgba(216, 177, 91, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(185, 139, 58, 0.06) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
     transition: opacity 0.4s ease;
 }
 
 body.dark-mode::after {
-    opacity: 0.6;
+    background: radial-gradient(circle at 20% 50%, rgba(216, 177, 91, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(160, 128, 64, 0.05) 0%, transparent 50%);
+    opacity: 1;
 }
 
 html.dark-mode body::after {
-    opacity: 0.6;
+    background: radial-gradient(circle at 20% 50%, rgba(216, 177, 91, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(160, 128, 64, 0.05) 0%, transparent 50%);
+    opacity: 1;
 }
 
 /* Header */
 .header {
-    background: linear-gradient(135deg, #1c1c22 0%, #24242b 100%);
+    background: linear-gradient(135deg, #fefaf4 0%, #fff9f0 100%);
     backdrop-filter: blur(20px);
     padding: 2.5rem;
     text-align: center;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(201, 169, 109, 0.1);
-    border-bottom: 1px solid rgba(201, 169, 109, 0.25);
+    box-shadow: 0 6px 24px rgba(216, 177, 91, 0.12), inset 0 1px 0 rgba(216, 177, 91, 0.15);
+    border-bottom: 2px solid rgba(216, 177, 91, 0.25);
     position: relative;
     z-index: 10;
 }
@@ -82,7 +86,7 @@ html.dark-mode body::after {
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201, 169, 109, 0.5), transparent);
+    background: linear-gradient(90deg, transparent, rgba(216, 177, 91, 0.4), transparent);
 }
 
 .header-top {
@@ -96,25 +100,26 @@ html.dark-mode body::after {
 
 .header h1 {
     font-size: 2.8rem;
-    background: linear-gradient(135deg, #e9d6a7, #c9a96d);
+    background: linear-gradient(135deg, #b8914a, #d8b15b);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 0;
     font-weight: 800;
     letter-spacing: 2px;
-    text-shadow: 0 0 20px rgba(201, 169, 109, 0.25);
+    text-shadow: 0 0 20px rgba(216, 177, 91, 0.2);
     transition: text-shadow 0.4s ease;
 }
 
 body.dark-mode .header h1 {
-    text-shadow: 0 0 12px rgba(212, 165, 122, 0.2);
+    background: linear-gradient(135deg, #e9d6a7, #c9a96d);
+    text-shadow: 0 0 20px rgba(216, 177, 91, 0.25);
 }
 
 .theme-toggle {
-    background: rgba(201, 169, 109, 0.12);
-    border: 1px solid rgba(201, 169, 109, 0.35);
-    color: #e9d6a7;
+    background: rgba(216, 177, 91, 0.15);
+    border: 1px solid rgba(216, 177, 91, 0.35);
+    color: #b8914a;
     border-radius: 50%;
     width: 45px;
     height: 45px;
@@ -130,21 +135,21 @@ body.dark-mode .header h1 {
 }
 
 .theme-toggle:hover {
-    background: rgba(201, 169, 109, 0.2);
-    box-shadow: 0 0 20px rgba(201, 169, 109, 0.25);
-    border-color: rgba(201, 169, 109, 0.55);
+    background: rgba(216, 177, 91, 0.25);
+    box-shadow: 0 0 20px rgba(216, 177, 91, 0.3);
+    border-color: rgba(216, 177, 91, 0.6);
 }
 
 body.dark-mode .theme-toggle {
-    background: rgba(212, 165, 122, 0.15);
-    border-color: rgba(212, 165, 122, 0.35);
-    color: #f3e7dc;
+    background: rgba(201, 169, 109, 0.12);
+    border-color: rgba(201, 169, 109, 0.35);
+    color: #e9d6a7;
 }
 
 body.dark-mode .theme-toggle:hover {
-    background: rgba(212, 165, 122, 0.3);
-    box-shadow: 0 0 20px rgba(212, 165, 122, 0.35);
-    border-color: rgba(212, 165, 122, 0.6);
+    background: rgba(216, 177, 91, 0.2);
+    box-shadow: 0 0 20px rgba(216, 177, 91, 0.25);
+    border-color: rgba(216, 177, 91, 0.55);
 }
 
 .auth-buttons, .user-info {
@@ -192,7 +197,7 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .user-email {
-    color: #e9d6a7;
+    color: #b8914a;
     font-weight: 700;
     padding: 0.6rem 0;
     font-size: 0.95rem;
@@ -200,7 +205,7 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .subtitle {
-    color: #cdb990;
+    color: #8d7350;
     font-size: 1.05rem;
     font-weight: 500;
     letter-spacing: 1px;
@@ -265,13 +270,13 @@ body.dark-mode .theme-toggle:hover {
 
 .section-title {
     text-align: center;
-    color: #e6cf9f;
+    color: #b8914a;
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    text-shadow: 0 0 18px rgba(216, 177, 91, 0.25);
+    text-shadow: 0 0 18px rgba(216, 177, 91, 0.15);
 }
 
 /* Main Content */
@@ -301,16 +306,16 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .filter-group {
-    background: rgba(22, 22, 28, 0.95);
-    border: 1px solid rgba(216, 177, 91, 0.35);
+    background: rgba(255, 251, 246, 0.95);
+    border: 1px solid rgba(216, 177, 91, 0.3);
     border-radius: 12px;
     padding: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 6px 20px rgba(216, 177, 91, 0.12);
 }
 
 .filter-summary {
-    color: #e6cf9f;
+    color: #b8914a;
     font-weight: 700;
     font-size: 1rem;
     text-transform: uppercase;
@@ -323,7 +328,7 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .filter-summary:hover {
-    text-shadow: 0 0 15px rgba(216, 177, 91, 0.35);
+    text-shadow: 0 0 15px rgba(216, 177, 91, 0.25);
 }
 
 .filter-group[open] .filter-summary {
@@ -344,7 +349,7 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .filter-option label {
-    color: #d7c7a9;
+    color: #5a4d3e;
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -354,7 +359,7 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .filter-option label:hover {
-    color: #f1dbab;
+    color: #b8914a;
 }
 
 .filter-checkbox {
@@ -366,24 +371,24 @@ body.dark-mode .theme-toggle:hover {
 
 .filter-select {
     padding: 0.6rem 1rem;
-    background: rgba(20, 20, 24, 0.98);
-    border: 1px solid rgba(216, 177, 91, 0.35);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(216, 177, 91, 0.3);
     border-radius: 8px;
-    color: #f2e7d3;
+    color: #3d3428;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .filter-select:hover,
 .filter-select:focus {
-    border-color: rgba(216, 177, 91, 0.65);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+    border-color: rgba(216, 177, 91, 0.55);
+    box-shadow: 0 6px 18px rgba(216, 177, 91, 0.15);
     outline: none;
 }
 
 .filter-select option {
-    background: #141419;
-    color: #f2e7d3;
+    background: #fffefb;
+    color: #3d3428;
 }
 
 .search-input {
@@ -392,22 +397,22 @@ body.dark-mode .theme-toggle:hover {
     font-size: 1rem;
     border: 1px solid rgba(216, 177, 91, 0.35);
     border-radius: 12px;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 6px 18px rgba(216, 177, 91, 0.12);
     transition: all 0.3s ease;
-    background: rgba(18, 18, 22, 0.95);
-    color: #f2e7d3;
+    background: rgba(255, 255, 255, 0.95);
+    color: #3d3428;
 }
 
 .search-input::placeholder {
-    color: #bda98a;
+    color: #9b8b74;
 }
 
 .search-input:focus {
     outline: none;
-    border-color: rgba(216, 177, 91, 0.85);
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
+    border-color: rgba(216, 177, 91, 0.7);
+    box-shadow: 0 8px 22px rgba(216, 177, 91, 0.2);
     transform: translateY(-2px);
-    background: rgba(16, 16, 20, 0.98);
+    background: rgba(255, 255, 255, 1);
 }
 
 .search-button {
@@ -461,13 +466,13 @@ body.dark-mode .theme-toggle:hover {
 
 /* Recipe Card */
 .recipe-card {
-    background: rgba(18, 18, 22, 0.96);
+    background: rgba(255, 255, 255, 0.96);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 10px 28px rgba(216, 177, 91, 0.15);
     transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
     cursor: pointer;
-    border: 1px solid rgba(216, 177, 91, 0.25);
+    border: 1px solid rgba(216, 177, 91, 0.2);
     position: relative;
 }
 
@@ -484,8 +489,8 @@ body.dark-mode .theme-toggle:hover {
 
 .recipe-card:hover {
     transform: translateY(-12px);
-    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.55);
-    border-color: rgba(216, 177, 91, 0.6);
+    box-shadow: 0 18px 45px rgba(216, 177, 91, 0.25);
+    border-color: rgba(216, 177, 91, 0.45);
 }
 
 .recipe-image {
@@ -509,23 +514,23 @@ body.dark-mode .theme-toggle:hover {
 
 .recipe-title {
     font-size: 1.3rem;
-    color: #e6cf9f;
+    color: #b8914a;
     margin-bottom: 0.75rem;
     font-weight: 700;
     line-height: 1.4;
-    text-shadow: 0 0 12px rgba(216, 177, 91, 0.2);
+    text-shadow: 0 0 12px rgba(216, 177, 91, 0.1);
 }
 
 .recipe-details {
-    color: #cdb990;
+    color: #6d5f4d;
     font-size: 0.9rem;
     line-height: 1.6;
 }
 
 /* Rating System */
 .rating-section {
-    background: rgba(18, 18, 22, 0.9);
-    border: 1px solid rgba(216, 177, 91, 0.3);
+    background: rgba(255, 251, 246, 0.9);
+    border: 1px solid rgba(216, 177, 91, 0.25);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -542,12 +547,12 @@ body.dark-mode .theme-toggle:hover {
 
 .rating-stars {
     font-size: 1.8rem;
-    color: #e6cf9f;
-    text-shadow: 0 0 10px rgba(216, 177, 91, 0.25);
+    color: #d8b15b;
+    text-shadow: 0 0 10px rgba(216, 177, 91, 0.2);
 }
 
 .rating-count {
-    color: #cdb990;
+    color: #8d7350;
     font-size: 0.9rem;
 }
 
@@ -556,7 +561,7 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .rating-label {
-    color: #cdb990;
+    color: #8d7350;
     font-size: 0.9rem;
     margin-bottom: 0.8rem;
     text-transform: uppercase;
@@ -571,31 +576,31 @@ body.dark-mode .theme-toggle:hover {
 
 .star {
     font-size: 2rem;
-    color: rgba(216, 177, 91, 0.45);
+    color: rgba(216, 177, 91, 0.35);
     cursor: pointer;
     transition: all 0.2s ease;
-    text-shadow: 0 0 10px rgba(216, 177, 91, 0.2);
+    text-shadow: 0 0 10px rgba(216, 177, 91, 0.1);
 }
 
 .star:hover {
-    color: #f2ddaa;
-    text-shadow: 0 0 20px rgba(216, 177, 91, 0.4);
+    color: #d8b15b;
+    text-shadow: 0 0 20px rgba(216, 177, 91, 0.3);
     transform: scale(1.2);
 }
 
 /* Loading State */
 .loading {
     text-align: center;
-    color: #e6cf9f;
+    color: #b8914a;
     font-size: 1.2rem;
     padding: 2rem;
-    text-shadow: 0 0 10px rgba(216, 177, 91, 0.3);
+    text-shadow: 0 0 10px rgba(216, 177, 91, 0.2);
 }
 
 .empty-state {
     text-align: center;
     padding: 64px 32px;
-    color: #cdb990;
+    color: #8d7350;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -615,14 +620,14 @@ body.dark-mode .theme-toggle:hover {
 .empty-state-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #e6cf9f;
+    color: #b8914a;
     margin-bottom: 0.5rem;
-    text-shadow: 0 0 15px rgba(216, 177, 91, 0.3);
+    text-shadow: 0 0 15px rgba(216, 177, 91, 0.2);
 }
 
 .empty-state-message {
     font-size: 1.05rem;
-    color: #b9aa8b;
+    color: #9b8b74;
     margin-bottom: 1.5rem;
     line-height: 1.6;
 }
@@ -683,7 +688,7 @@ body.dark-mode .theme-toggle:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(6, 6, 8, 0.85);
+    background: rgba(61, 52, 40, 0.8);
     backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
@@ -707,16 +712,16 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .modal-content {
-    background: linear-gradient(135deg, #121216 0%, #1b1b21 100%);
+    background: linear-gradient(135deg, #fefaf4 0%, #fffcf7 100%);
     border-radius: 16px;
     padding: 2.5rem;
     max-width: 600px;
     max-height: 80vh;
     overflow-y: auto;
     position: relative;
-    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 24px 60px rgba(216, 177, 91, 0.2);
     animation: slideUp 0.4s ease;
-    border: 1px solid rgba(216, 177, 91, 0.35);
+    border: 1px solid rgba(216, 177, 91, 0.3);
 }
 
 .modal-content::before {
@@ -733,14 +738,14 @@ body.dark-mode .theme-toggle:hover {
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    background: rgba(216, 177, 91, 0.12);
-    border: 1px solid rgba(216, 177, 91, 0.35);
+    background: rgba(216, 177, 91, 0.15);
+    border: 1px solid rgba(216, 177, 91, 0.3);
     font-size: 1.8rem;
     width: 45px;
     height: 45px;
     border-radius: 50%;
     cursor: pointer;
-    color: #f2ddaa;
+    color: #b8914a;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -748,11 +753,11 @@ body.dark-mode .theme-toggle:hover {
 }
 
 .modal-close:hover {
-    background: rgba(216, 177, 91, 0.22);
-    border-color: rgba(216, 177, 91, 0.7);
-    color: #f6e6c5;
+    background: rgba(216, 177, 91, 0.25);
+    border-color: rgba(216, 177, 91, 0.6);
+    color: #a07d3d;
     transform: rotate(90deg);
-    box-shadow: 0 0 20px rgba(216, 177, 91, 0.3);
+    box-shadow: 0 0 20px rgba(216, 177, 91, 0.2);
 }
 
 .recipe-modal-image {
@@ -761,17 +766,17 @@ body.dark-mode .theme-toggle:hover {
     object-fit: cover;
     border-radius: 12px;
     margin-bottom: 1.5rem;
-    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(216, 177, 91, 0.25);
+    box-shadow: 0 10px 28px rgba(216, 177, 91, 0.15);
+    border: 1px solid rgba(216, 177, 91, 0.2);
 }
 
 .recipe-modal-title {
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    color: #e6cf9f;
+    color: #b8914a;
     font-weight: 800;
     line-height: 1.3;
-    text-shadow: 0 0 18px rgba(216, 177, 91, 0.25);
+    text-shadow: 0 0 18px rgba(216, 177, 91, 0.15);
 }
 
 .recipe-modal-section {
@@ -780,18 +785,18 @@ body.dark-mode .theme-toggle:hover {
 
 .recipe-modal-section h3 {
     font-size: 1.3rem;
-    color: #e6cf9f;
+    color: #b8914a;
     margin-bottom: 1rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(216, 177, 91, 0.2);
+    text-shadow: 0 0 10px rgba(216, 177, 91, 0.1);
 }
 
 .recipe-modal-section ul {
     list-style-position: inside;
     line-height: 2;
-    color: #d7c7a9;
+    color: #5a4d3e;
 }
 
 .recipe-modal-section ul li {
@@ -800,7 +805,7 @@ body.dark-mode .theme-toggle:hover {
 
 .recipe-modal-section p {
     line-height: 1.8;
-    color: #d7c7a9;
+    color: #5a4d3e;
     font-size: 1rem;
 }
 
@@ -842,11 +847,11 @@ body.dark-mode .theme-toggle:hover {
 
 .auth-form h2 {
     text-align: center;
-    color: #e6cf9f;
+    color: #b8914a;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     font-weight: 800;
-    text-shadow: 0 0 20px rgba(216, 177, 91, 0.2);
+    text-shadow: 0 0 20px rgba(216, 177, 91, 0.1);
 }
 
 .form-group {
@@ -857,7 +862,7 @@ body.dark-mode .theme-toggle:hover {
 
 .form-group label {
     font-weight: 700;
-    color: #e6cf9f;
+    color: #b8914a;
     font-size: 0.95rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -865,27 +870,27 @@ body.dark-mode .theme-toggle:hover {
 
 .form-group input {
     padding: 0.95rem 1.2rem;
-    border: 1px solid rgba(216, 177, 91, 0.35);
+    border: 1px solid rgba(216, 177, 91, 0.3);
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: rgba(18, 18, 22, 0.95);
-    color: #f2e7d3;
+    background: rgba(255, 255, 255, 0.95);
+    color: #3d3428;
 }
 
 .form-group input::placeholder {
-    color: #bda98a;
+    color: #9b8b74;
 }
 
 .form-group input:invalid:not(:placeholder-shown) {
-    border-color: rgba(216, 177, 91, 0.35) !important;
+    border-color: rgba(216, 177, 91, 0.3) !important;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: rgba(216, 177, 91, 0.85);
-    background: rgba(16, 16, 20, 0.98);
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
+    border-color: rgba(216, 177, 91, 0.7);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 8px 22px rgba(216, 177, 91, 0.2);
     transform: translateY(-2px);
 }
 
@@ -916,23 +921,23 @@ body.dark-mode .theme-toggle:hover {
 
 .toggle-auth {
     text-align: center;
-    color: #cdb990;
+    color: #8d7350;
     margin-top: 1rem;
     font-size: 0.95rem;
 }
 
 .toggle-auth a {
-    color: #f2ddaa;
+    color: #b8914a;
     cursor: pointer;
     font-weight: 700;
     text-decoration: underline;
     transition: color 0.3s ease;
-    text-shadow: 0 0 10px rgba(216, 177, 91, 0.35);
+    text-shadow: 0 0 10px rgba(216, 177, 91, 0.2);
 }
 
 .toggle-auth a:hover {
-    color: #f6e6c5;
-    text-shadow: 0 0 15px rgba(216, 177, 91, 0.5);
+    color: #d8b15b;
+    text-shadow: 0 0 15px rgba(216, 177, 91, 0.35);
 }
 
 .error-message {

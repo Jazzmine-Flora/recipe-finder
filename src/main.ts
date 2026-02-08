@@ -118,11 +118,120 @@ filterGlutenFree.addEventListener('change', handleSearch);
 filterDairyFree.addEventListener('change', handleSearch);
 filterCuisine.addEventListener('change', handleSearch);
 
+const SPOONACULAR_API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY as string | undefined;
+const EDAMAM_APP_ID = import.meta.env.VITE_EDAMAM_APP_ID as string | undefined;
+const EDAMAM_APP_KEY = import.meta.env.VITE_EDAMAM_APP_KEY as string | undefined;
+
+function stripHtml(html: string) {
+  return html.replace(/<[^>]*>/g, '');
+}
+
+function normalizeTags(tags: string[] | string | undefined) {
+  if (!tags) return '';
+  return Array.isArray(tags) ? tags.join(',') : tags;
+}
+
+function addDietTagsFromList(list: string[] | undefined, collector: Set<string>) {
+  if (!list) return;
+  list.forEach((item) => {
+    const value = item.toLowerCase();
+    if (value.includes('vegetarian')) collector.add('Vegetarian');
+    if (value.includes('vegan')) collector.add('Vegan');
+    if (value.includes('gluten')) collector.add('Gluten Free');
+    if (value.includes('dairy')) collector.add('Dairy Free');
+  });
+}
+
+function hasTag(meal: any, tag: string) {
+  const tagValue = tag.toLowerCase();
+  const tags = (meal.strTags || '').toLowerCase();
+  return tags.includes(tagValue) || meal.strMeal?.toLowerCase().includes(tagValue);
+}
+
+function mapSpoonacularMeal(recipe: any) {
+  const dietTags = new Set<string>();
+  addDietTagsFromList(recipe.diets, dietTags);
+  const tags = normalizeTags(Array.from(dietTags));
+  const ingredients = (recipe.extendedIngredients || []).map((item: any) => {
+    const amount = item.amount ? `${item.amount}` : '';
+    const unit = item.unit ? `${item.unit}` : '';
+    const name = item.name || '';
+    return `${amount} ${unit} ${name}`.trim();
+  });
+
+  return {
+    idMeal: `spoonacular:${recipe.id}`,
+    source: 'spoonacular',
+    strMeal: recipe.title,
+    strMealThumb: recipe.image,
+    strCategory: recipe.dishTypes?.[0] || 'Recipe',
+    strArea: recipe.cuisines?.[0] || 'International',
+    strTags: tags,
+    strInstructions: recipe.instructions ? stripHtml(recipe.instructions) : recipe.summary ? stripHtml(recipe.summary) : 'See source for instructions.',
+    ingredients,
+    sourceUrl: recipe.sourceUrl
+  };
+}
+
+function mapEdamamMeal(recipe: any) {
+  const dietTags = new Set<string>();
+  addDietTagsFromList(recipe.dietLabels, dietTags);
+  addDietTagsFromList(recipe.healthLabels, dietTags);
+  const tags = normalizeTags(Array.from(dietTags));
+  const ingredients = recipe.ingredientLines || [];
+
+  return {
+    idMeal: `edamam:${encodeURIComponent(recipe.uri)}`,
+    source: 'edamam',
+    strMeal: recipe.label,
+    strMealThumb: recipe.image,
+    strCategory: recipe.dishType?.[0] || 'Recipe',
+    strArea: recipe.cuisineType?.[0] || 'International',
+    strTags: tags,
+    strInstructions: recipe.url ? 'See source for full instructions.' : 'Instructions not available.',
+    ingredients,
+    sourceUrl: recipe.url
+  };
+}
+
+async function fetchTheMealDB(query: string): Promise<any[]> {
+  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return (data.meals || []).map((meal: any) => ({
+    ...meal,
+    source: 'themealdb',
+    strTags: normalizeTags(meal.strTags)
+  }));
+}
+
+async function fetchSpoonacular(query: string): Promise<any[]> {
+  if (!SPOONACULAR_API_KEY) return [];
+  const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?query=${encodeURIComponent(query)}&addRecipeInformation=true&number=20&apiKey=${SPOONACULAR_API_KEY}`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return (data.results || []).map(mapSpoonacularMeal);
+}
+
+async function fetchEdamam(query: string): Promise<any[]> {
+  if (!EDAMAM_APP_ID || !EDAMAM_APP_KEY) return [];
+  const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${encodeURIComponent(query)}&app_id=${EDAMAM_APP_ID}&app_key=${EDAMAM_APP_KEY}`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return (data.hits || []).map((hit: any) => mapEdamamMeal(hit.recipe));
+}
+
 // Function to handle search
-function handleSearch() {
-  const query = searchInput.value; // Get what the user typed
+async function handleSearch() {
+  const query = searchInput.value.trim();
   
-  if (query.trim() === '') {
+  if (query === '') {
     alert('Please enter a recipe to search for!');
     return;
   }
@@ -144,57 +253,58 @@ function handleSearch() {
   recipesContainer.classList.remove('is-empty');
   recipesContainer.innerHTML = '<p class="loading">🍳 Loading recipes...</p>';
   
-  // Fetch recipes from TheMealDB API
-  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('API Response:', data);
-      if (!data.meals) {
-        recipesContainer.classList.add('is-empty');
-        recipesContainer.innerHTML = `
-          <div class="empty-state">
-            <span class="empty-state-icon">🔍</span>
-            <h3 class="empty-state-title">No Recipes Found</h3>
-            <p class="empty-state-message">No recipes found for "${query}". Try a different search!</p>
-          </div>
-        `;
-        lastSearchResults = [];
-        return;
-      }
-      console.log('Recipes found:', data.meals.length);
-      let filteredMeals = data.meals || [];
-      
-      // Apply filters
-      const selectedCuisine = filterCuisine.value;
-      if (selectedCuisine) {
-        filteredMeals = filteredMeals.filter((meal: any) => meal.strArea === selectedCuisine);
-      }
-      
-      // Filter by dietary restrictions (check meal names/tags)
-      if (filterVegetarian.checked) {
-        filteredMeals = filteredMeals.filter((meal: any) => 
-          meal.strTags?.includes('Vegetarian') || meal.strMeal?.toLowerCase().includes('vegetarian')
-        );
-      }
-      
-      if (filterVegan.checked) {
-        filteredMeals = filteredMeals.filter((meal: any) => 
-          meal.strTags?.includes('Vegan') || meal.strMeal?.toLowerCase().includes('vegan')
-        );
-      }
-      
-      lastSearchResults = filteredMeals;
-      displayRecipes(filteredMeals);
-    })
-    .catch(error => {
-      console.error('Error fetching recipes:', error);
-      recipesContainer.innerHTML = '<p class="error">Failed to fetch recipes. Please try again!</p>';
-    });
+  try {
+    const sourcePromises: Promise<any[]>[] = [fetchTheMealDB(query)];
+    if (SPOONACULAR_API_KEY) sourcePromises.push(fetchSpoonacular(query));
+    if (EDAMAM_APP_ID && EDAMAM_APP_KEY) sourcePromises.push(fetchEdamam(query));
+
+    const results = await Promise.allSettled(sourcePromises);
+    const meals = results.flatMap((result) => result.status === 'fulfilled' ? result.value : []);
+
+    if (!meals || meals.length === 0) {
+      recipesContainer.classList.add('is-empty');
+      recipesContainer.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-state-icon">🔍</span>
+          <h3 class="empty-state-title">No Recipes Found</h3>
+          <p class="empty-state-message">No recipes found for "${query}". Try a different search!</p>
+        </div>
+      `;
+      lastSearchResults = [];
+      return;
+    }
+
+    let filteredMeals = meals;
+    
+    // Apply filters
+    const selectedCuisine = filterCuisine.value;
+    if (selectedCuisine) {
+      filteredMeals = filteredMeals.filter((meal: any) => meal.strArea?.toLowerCase() === selectedCuisine.toLowerCase());
+    }
+    
+    // Filter by dietary restrictions (check meal names/tags)
+    if (filterVegetarian.checked) {
+      filteredMeals = filteredMeals.filter((meal: any) => hasTag(meal, 'vegetarian'));
+    }
+    
+    if (filterVegan.checked) {
+      filteredMeals = filteredMeals.filter((meal: any) => hasTag(meal, 'vegan'));
+    }
+
+    if (filterGlutenFree.checked) {
+      filteredMeals = filteredMeals.filter((meal: any) => hasTag(meal, 'gluten free'));
+    }
+
+    if (filterDairyFree.checked) {
+      filteredMeals = filteredMeals.filter((meal: any) => hasTag(meal, 'dairy free'));
+    }
+    
+    lastSearchResults = filteredMeals;
+    displayRecipes(filteredMeals);
+  } catch (error) {
+    console.error('Error fetching recipes:', error);
+    recipesContainer.innerHTML = '<p class="error">Failed to fetch recipes. Please try again!</p>';
+  }
 }
 
 // Close modal when X button is clicked
@@ -295,110 +405,127 @@ function displayRecipes(meals: any[]) {
       <div class="recipe-info">
         <h3 class="recipe-title">${meal.strMeal}</h3>
         <div class="recipe-details">
-          <p><strong>Category:</strong> ${meal.strCategory}</p>
-          <p><strong>Cuisine:</strong> ${meal.strArea}</p>
+          <p><strong>Category:</strong> ${meal.strCategory || 'Recipe'}</p>
+          <p><strong>Cuisine:</strong> ${meal.strArea || 'International'}</p>
         </div>
       </div>
     `;
     
     // Add click handler to open modal with full recipe details
     card.addEventListener('click', () => {
-      openRecipeModal(meal.idMeal);
+      openRecipeModal(meal);
     });
     
     recipesContainer.appendChild(card);
   });
 }
 
+function renderRecipeModal(meal: any, ingredientsHtml: string, instructionsHtml: string) {
+  const mealId = meal.idMeal;
+
+  modalBody.innerHTML = `
+    <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="recipe-modal-image">
+    <h2 class="recipe-modal-title">${meal.strMeal}</h2>
+    
+    <div class="rating-section">
+      <div id="average-rating" class="average-rating">
+        <span class="rating-stars">★★★★★</span>
+        <span class="rating-count">(0 ratings)</span>
+      </div>
+      <div class="user-rating">
+        <p class="rating-label">Rate this recipe:</p>
+        <div id="star-rating" class="star-rating">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+      </div>
+    </div>
+    
+    <button id="favorite-btn" class="favorite-btn">❤️ Add to Favorites</button>
+    
+    <div class="recipe-modal-section">
+      <h3>Ingredients</h3>
+      <ul>${ingredientsHtml}</ul>
+    </div>
+    
+    <div class="recipe-modal-section">
+      <h3>Instructions</h3>
+      ${instructionsHtml}
+    </div>
+  `;
+  
+  // Load and display ratings
+  loadRecipeRating(mealId);
+  
+  // Handle star rating clicks
+  const starRating = document.getElementById('star-rating') as HTMLDivElement;
+  if (starRating && currentUser) {
+    const stars = starRating.querySelectorAll('.star');
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const value = parseInt((star as HTMLElement).getAttribute('data-value') || '0');
+        saveRating(mealId, value);
+      });
+      star.addEventListener('mouseover', () => {
+        const value = parseInt((star as HTMLElement).getAttribute('data-value') || '0');
+        updateStarDisplay(value);
+      });
+    });
+    starRating.addEventListener('mouseout', () => {
+      loadRecipeRating(mealId);
+    });
+  } else if (starRating && !currentUser) {
+    starRating.style.opacity = '0.5';
+    starRating.style.pointerEvents = 'none';
+  }
+  
+  // Handle favorite button click
+  const favoriteBtn = document.getElementById('favorite-btn') as HTMLButtonElement;
+  favoriteBtn.addEventListener('click', () => {
+    toggleFavorite(meal);
+  });
+  
+  // Check if already favorited and update button
+  updateFavoriteButton(mealId, favoriteBtn);
+  
+  // Show modal
+  modal.classList.remove('hidden');
+}
+
 // Function to open recipe modal and fetch full details
-function openRecipeModal(mealId: string) {
+function openRecipeModal(meal: any) {
+  if (meal.source && meal.source !== 'themealdb') {
+    const ingredientItems = (meal.ingredients || []).map((item: string) => `<li>${item}</li>`).join('');
+    const ingredientsHtml = ingredientItems || '<li>No ingredients available.</li>';
+    const instructionsText = meal.strInstructions || meal.instructions || 'See source for full instructions.';
+    const sourceLink = meal.sourceUrl
+      ? `<p><strong>Source:</strong> <a href="${meal.sourceUrl}" target="_blank" rel="noopener noreferrer">Open recipe source</a></p>`
+      : '';
+    renderRecipeModal(meal, ingredientsHtml, `<p>${instructionsText}</p>${sourceLink}`);
+    return;
+  }
+
+  const mealId = meal.idMeal;
   // Fetch full recipe details
   fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
     .then(response => response.json())
     .then(data => {
-      const meal = data.meals[0];
+      const mealData = data.meals[0];
       
       // Build ingredients list
       let ingredients = '';
       for (let i = 1; i <= 20; i++) {
-        const ingredient = meal[`strIngredient${i}`];
-        const measure = meal[`strMeasure${i}`];
+        const ingredient = mealData[`strIngredient${i}`];
+        const measure = mealData[`strMeasure${i}`];
         if (ingredient && ingredient.trim()) {
           ingredients += `<li>${measure} ${ingredient}</li>`;
         }
       }
       
-      // Populate modal with recipe details
-      modalBody.innerHTML = `
-        <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="recipe-modal-image">
-        <h2 class="recipe-modal-title">${meal.strMeal}</h2>
-        
-        <div class="rating-section">
-          <div id="average-rating" class="average-rating">
-            <span class="rating-stars">★★★★★</span>
-            <span class="rating-count">(0 ratings)</span>
-          </div>
-          <div class="user-rating">
-            <p class="rating-label">Rate this recipe:</p>
-            <div id="star-rating" class="star-rating">
-              <span class="star" data-value="1">★</span>
-              <span class="star" data-value="2">★</span>
-              <span class="star" data-value="3">★</span>
-              <span class="star" data-value="4">★</span>
-              <span class="star" data-value="5">★</span>
-            </div>
-          </div>
-        </div>
-        
-        <button id="favorite-btn" class="favorite-btn">❤️ Add to Favorites</button>
-        
-        <div class="recipe-modal-section">
-          <h3>Ingredients</h3>
-          <ul>${ingredients}</ul>
-        </div>
-        
-        <div class="recipe-modal-section">
-          <h3>Instructions</h3>
-          <p>${meal.strInstructions}</p>
-        </div>
-      `;
-      
-      // Load and display ratings
-      loadRecipeRating(mealId);
-      
-      // Handle star rating clicks
-      const starRating = document.getElementById('star-rating') as HTMLDivElement;
-      if (starRating && currentUser) {
-        const stars = starRating.querySelectorAll('.star');
-        stars.forEach(star => {
-          star.addEventListener('click', () => {
-            const value = parseInt((star as HTMLElement).getAttribute('data-value') || '0');
-            saveRating(mealId, value);
-          });
-          star.addEventListener('mouseover', () => {
-            const value = parseInt((star as HTMLElement).getAttribute('data-value') || '0');
-            updateStarDisplay(value);
-          });
-        });
-        starRating.addEventListener('mouseout', () => {
-          loadRecipeRating(mealId);
-        });
-      } else if (starRating && !currentUser) {
-        starRating.style.opacity = '0.5';
-        starRating.style.pointerEvents = 'none';
-      }
-      
-      // Handle favorite button click
-      const favoriteBtn = document.getElementById('favorite-btn') as HTMLButtonElement;
-      favoriteBtn.addEventListener('click', () => {
-        toggleFavorite(meal);
-      });
-      
-      // Check if already favorited and update button
-      updateFavoriteButton(mealId, favoriteBtn);
-      
-      // Show modal
-      modal.classList.remove('hidden');
+      renderRecipeModal(mealData, ingredients, `<p>${mealData.strInstructions}</p>`);
     })
     .catch(error => {
       console.error('Error fetching recipe details:', error);
@@ -421,7 +548,11 @@ function toggleFavorite(meal: any) {
       strMeal: meal.strMeal,
       strMealThumb: meal.strMealThumb,
       strCategory: meal.strCategory,
-      strArea: meal.strArea
+      strArea: meal.strArea,
+      source: meal.source || 'themealdb',
+      ingredients: meal.ingredients,
+      strInstructions: meal.strInstructions || meal.instructions,
+      sourceUrl: meal.sourceUrl
     };
     favorites.push(favoriteMeal);
   }
